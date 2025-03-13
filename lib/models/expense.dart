@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
+
+var formatter = DateFormat.yMd();
 
 class Expense {
   final String id;
@@ -7,7 +10,6 @@ class Expense {
   final double amount;
   final DateTime date;
   final ExpenseCategory category;
-
   // constructor class
   Expense({
     required this.title,
@@ -15,6 +17,10 @@ class Expense {
     required this.date,
     required this.category,
   }) : id = const Uuid().v4();
+
+  get formattedDate {
+    return formatter.format(date);
+  }
 }
 
 enum ExpenseCategory {

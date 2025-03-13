@@ -26,22 +26,28 @@ class ExpenseItem extends StatelessWidget {
             ),
           ),
           subtitle: Text(expenseItem.title),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                '\$',
-                style: TextStyle(
-                  fontSize: 12,
-                ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    '\$',
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
+                  Text(
+                    expenseItem.amount.toStringAsFixed(2),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                expenseItem.amount.toStringAsFixed(2),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
+              Text(expenseItem.formattedDate)
             ],
           )),
     );
