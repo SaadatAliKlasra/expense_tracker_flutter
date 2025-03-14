@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning/expense_list.dart';
 import 'package:learning/models/expense.dart';
+import 'package:learning/new_expense.dart';
 
 class ExpenseScreen extends StatefulWidget {
   const ExpenseScreen({super.key});
@@ -30,6 +31,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
       category: ExpenseCategory.travel,
     ),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +39,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
         title: const Text("Expense Tracker"),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: _openAddExpenseOverlay,
             icon: const Icon(Icons.add),
           ),
         ],
@@ -45,6 +47,13 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
       body: ExpenseList(
         expenses: expenses,
       ),
+    );
+  }
+
+  void _openAddExpenseOverlay() {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => const NewExpense(),
     );
   }
 }
