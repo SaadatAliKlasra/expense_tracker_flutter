@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key});
@@ -10,7 +11,7 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleInputController = TextEditingController();
   final _amountInputController = TextEditingController();
-
+  DateTime? _selectedDate;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,13 +25,36 @@ class _NewExpenseState extends State<NewExpense> {
               label: Text("Title"),
             ),
           ),
-          TextField(
-            maxLength: 50,
-            controller: _amountInputController,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              label: Text("Amount"),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  maxLength: 50,
+                  controller: _amountInputController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    label: Text("Amount"),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      _selectedDate == null
+                          ? "No Date Selected"
+                          : formatter.format(_selectedDate!),
+                    ),
+                    IconButton(
+                      onPressed: _presentDatePicker,
+                      icon: const Icon(Icons.date_range),
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
           Row(
             children: [
@@ -39,11 +63,7 @@ class _NewExpenseState extends State<NewExpense> {
                 child: const Text("Close"),
               ),
               ElevatedButton(
-                  onPressed: () {
-                    print(_titleInputController.text);
-                    print(_amountInputController.text);
-                  },
-                  child: const Text("Create Expense"))
+                  onPressed: () {}, child: const Text("Create Expense"))
             ],
           )
         ],
@@ -56,5 +76,18 @@ class _NewExpenseState extends State<NewExpense> {
     // manage your controllers here
     _titleInputController.dispose();
     super.dispose();
+  }
+
+  void _presentDatePicker() async {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year - 1);
+    final dateResponse = await showDatePicker(
+      context: context,
+      firstDate: firstDate,
+      lastDate: now,
+    );
+    setState(() {
+      _selectedDate = dateResponse;
+    });
   }
 }
