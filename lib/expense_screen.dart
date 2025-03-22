@@ -32,6 +32,12 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
     ),
   ];
 
+  void addNewExpense(Expense newExpense) {
+    setState(() {
+      expenses.add(newExpense);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +58,9 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
-      builder: (ctx) => const NewExpense(),
+      builder: (ctx) => NewExpense(onExpenseCreated: addNewExpense),
     );
   }
 }
