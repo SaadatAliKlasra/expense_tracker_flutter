@@ -40,6 +40,15 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Widget content = const Center(
+      child: Text("No expense found, try adding some!"),
+    );
+    if (expenses.isNotEmpty) {
+      content = ExpenseList(
+        expenses: expenses,
+        onRemovingExpense: removeExpense,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Expense Tracker"),
@@ -50,10 +59,20 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
           ),
         ],
       ),
-      body: ExpenseList(
-        expenses: expenses,
-      ),
+      body: content,
     );
+  }
+
+  void removeExpense(Expense expense) {
+    final expenseIndex = expenses.indexOf(expense);
+    setState(() {
+      expenses.remove(expense);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(_undoSnackbar(
+      expenseIndex,
+      expense,
+    ));
   }
 
   void _openAddExpenseOverlay() {
@@ -61,6 +80,21 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
       isScrollControlled: true,
       context: context,
       builder: (ctx) => NewExpense(onExpenseCreated: addNewExpense),
+    );
+  }
+
+  SnackBar _undoSnackbar(int index, Expense expense) {
+    return SnackBar(
+      content: const Text("Expense deleted!"),
+      duration: const Duration(seconds: 3),
+      action: SnackBarAction(
+        label: "Undo",
+        onPressed: () {
+          setState(() {
+            expenses.insert(index, expense);
+          });
+        },
+      ),
     );
   }
 }
