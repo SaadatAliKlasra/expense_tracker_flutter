@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:icon_decoration/icon_decoration.dart';
+import 'package:learning/data/categories.dart';
 
 class Homepage extends StatelessWidget {
-  final List<Map<String, String>> categories = [
-    {"title": "All", "image": "assets/images/pecans.jpg"},
-    {"title": "Dinner", "image": "assets/images/pecans.jpg"},
-    {"title": "Desert", "image": "assets/images/pecans.jpg"},
-    {"title": "Sea Food", "image": "assets/images/pecans.jpg"},
-    {"title": "Appetizer", "image": "assets/images/pecans.jpg"},
-  ];
-
-  Homepage({super.key});
+  const Homepage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,32 +49,29 @@ class Homepage extends StatelessWidget {
 
   SizedBox _categoriesList(context) {
     return SizedBox(
-      height: 150,
       child: ListView.builder(
         itemCount: categories.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (ctx, index) {
           final category = categories[index];
-          return Container(
-            width: 100,
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(20)),
-                  child: Image.asset(
-                    category["image"]!,
-                    width: 100,
-                    height: 100,
+          return InkWell(
+            onTap: () {},
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 2),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Image.asset(
+                    category.image,
+                    width: 70,
+                    height: 70,
                     fit: BoxFit.cover,
                   ),
-                ),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text(
-                    category["title"]!,
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    category.name,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurface,
@@ -89,8 +79,8 @@ class Homepage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
@@ -153,7 +143,7 @@ class Homepage extends StatelessWidget {
 
   Container _searchBar(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSecondary,
         borderRadius: BorderRadius.circular(30),
