@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:icon_decoration/icon_decoration.dart';
-import 'package:learning/data/categories.dart';
+import 'package:learning/data/meal_types.dart';
+import 'package:learning/pages/recipes/recipes_screen.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -8,70 +9,82 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          _headerSection(context),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.sunny,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 30,
-                    ),
-                    const SizedBox(width: 10),
-                    const Text(
-                      "Good Morning!",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
-                const Text(
-                  "John Doe",
-                  style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 30),
-                _searchBar(context),
-                const SizedBox(height: 20),
-                _categoriesList(context),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _headerSection(context),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.sunny,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 30,
+                      ),
+                      const SizedBox(width: 10),
+                      const Text(
+                        "Good Morning!",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  ),
+                  const Text(
+                    "John Doe",
+                    style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 30),
+                  _searchBar(context),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                      height: 120,
+                      child: _categoriesList(context)), // Constrain ListView
+                ],
+              ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
 
   SizedBox _categoriesList(context) {
     return SizedBox(
+      height: 120, // Set a height to avoid constraints issues
       child: ListView.builder(
-        itemCount: categories.length,
+        itemCount: mealTypes.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (ctx, index) {
-          final category = categories[index];
+          final mealType = mealTypes[index];
           return InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RecipesScreen(
+                          mealType: mealType,
+                        )),
+              );
+            },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 2),
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(4),
               child: Column(
                 children: [
                   Image.asset(
-                    category.image,
+                    mealType.image,
                     width: 70,
                     height: 70,
                     fit: BoxFit.cover,
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   Text(
-                    category.name,
+                    mealType.name,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurface,
